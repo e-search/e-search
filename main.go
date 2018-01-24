@@ -1,20 +1,33 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
-	"os"
+	"database/sql"
+	"log"
+
+	"github.com/e-search/e-search/account/controller"
+	"github.com/e-search/e-search/account/repository"
+	"github.com/e-search/e-search/account/usecase"
+	"github.com/e-search/e-search/toml"
+	"github.com/labstack/echo"
+	_ "github.com/lib/pq"
 )
 
 func main() {
-	port := ":8080"
-	if os.Getenv("PORT") != "" {
-		port = os.Getenv("PORT")
+	url, err := toml.LoadDBToml()
+	if err != nil {
+		log.Println(err)
 	}
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		encoder := json.NewEncoder(w)
-		w.WriteHeader(http.StatusOK)
-		encoder.Encode("Hello, World!")
-	})
-	http.ListenAndServe(port, nil)
+	dbConn, err := sql.Open("postgres", url)
+	if err != nil {
+		log.Println(err)
+	}
+	defer dbConn.Close()
+	e := echo.New()
+
+	accountRepo := repository.NewAccountRepository(dbConn)
+	accountUsecase := usecase.NewAccountUsecase(accountRepo)
+
+	controller.NewAccountController(e, accountUsecase)
+
+	e.Logger.Fatal(e.Start(":8080"))
 }
