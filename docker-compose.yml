@@ -1,0 +1,16 @@
+version: '3'
+services:
+    e-search:
+        build: .
+        #container_name: e-search
+        #working_dir: '/go/src/github.com/e-search/e-search'
+        #volumes:
+        #    - '.:/go/src/github.com/e-search/e-search'
+        ports:
+            - "8080:8080"
+        #environment:
+        #    - PORT=8080
+        #    - APP_ENV=dev
+        #command:
+        #    - go build
+        #    - ./e-search
