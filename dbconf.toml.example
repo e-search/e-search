@@ -1,0 +1,5 @@
+[postgres]
+dbname  = ""
+user    = ""
+host    = "localhost"
+sslmode = "disable"
