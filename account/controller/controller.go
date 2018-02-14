@@ -29,6 +29,22 @@ func (c *AccountController) Create(ctx echo.Context) error {
 	return ctx.JSON(http.StatusCreated, res)
 }
 
+// Update account update controller
+func (c *AccountController) Update(ctx echo.Context) error {
+	model := account.Account{}
+	err := ctx.Bind(&model)
+	if err != nil {
+		return ctx.JSON(http.StatusUnprocessableEntity, err.Error())
+	}
+
+	err = c.AccountUsecase.Update(&model)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return ctx.NoContent(http.StatusNoContent)
+}
+
 // NewAccountController mount accountcontroller
 func NewAccountController(e *echo.Echo, us usecase.AccountUsecase) {
 	handler := &AccountController{
@@ -36,4 +52,5 @@ func NewAccountController(e *echo.Echo, us usecase.AccountUsecase) {
 	}
 
 	e.POST("/accounts", handler.Create)
+	e.PATCH("/accounts", handler.Update)
 }

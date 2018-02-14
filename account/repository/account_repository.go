@@ -9,6 +9,7 @@ import (
 // AccountRepository repository interface
 type AccountRepository interface {
 	Create(*account.Account) (*account.Account, error)
+	Update(*account.Account) error
 }
 
 type accountRepository struct {
@@ -34,4 +35,18 @@ func (m *accountRepository) Create(u *account.Account) (*account.Account, error)
 		return nil, err
 	}
 	return u, nil
+}
+
+func (m *accountRepository) Update(u *account.Account) error {
+	query := "UPDATE accounts SET password = $1, email = $2, updated_at = now() WHERE id = $3"
+	stmt, err := m.Conn.Prepare(query)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmt.Exec(u.Password, u.Email, u.ID)
+	if err != nil {
+		return err
+	}
+	return nil
 }
