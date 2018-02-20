@@ -5,13 +5,13 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// AccountRepository mock account repository
-type AccountRepository struct {
+// AccountUsecase mock account usecase
+type AccountUsecase struct {
 	mock.Mock
 }
 
 // Create provide a mock function
-func (m *AccountRepository) Create(u *account.Account) (*account.Account, error) {
+func (m *AccountUsecase) Create(u *account.Account) (*account.Account, error) {
 	ret := m.Called(u)
 
 	var r0 *account.Account
@@ -35,7 +35,7 @@ func (m *AccountRepository) Create(u *account.Account) (*account.Account, error)
 }
 
 // Update provide a mock function
-func (m *AccountRepository) Update(u *account.Account) error {
+func (m *AccountUsecase) Update(u *account.Account) error {
 	ret := m.Called(u)
 
 	var r0 error

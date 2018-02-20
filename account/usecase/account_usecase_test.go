@@ -19,8 +19,8 @@ func TestUpdate(t *testing.T) {
 		Password: "asdf0987",
 	}
 
-	mockAccountRepo.On("Update", mock.AnythingOfType(*account.Account)).Return(nil)
-	defer mockAccountRepo.AssertCalled(t, "Update", mock.AnythingOfType(*account.Account))
+	mockAccountRepo.On("Update", mock.AnythingOfType("*account.Account")).Return(nil)
+	defer mockAccountRepo.AssertCalled(t, "Update", mock.AnythingOfType("*account.Account"))
 
 	u := usecase.NewAccountUsecase(mockAccountRepo)
 	err := u.Update(&mockAccount)
