@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS table accounts;
+DROP TABLE IF EXISTS accounts;
 
 CREATE TABLE accounts (
 	-- カラム
